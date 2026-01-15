@@ -806,7 +806,7 @@
                 </div>
                 <div class="flex flex-col gap-4">
                   <!-- Launch Stack button -->
-                  <div class="flex justify-center">
+                  <div class="flex flex-col items-center gap-2">
                     <a
                       id="cloudformation-launch-btn"
                       href="https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review"
@@ -829,6 +829,10 @@
                       </svg>
                       Launch CloudFormation Stack
                     </a>
+                    <p
+                      id="cloudformation-missing-fields-error"
+                      class="text-xs text-red-600 dark:text-red-400 hidden mt-1"
+                    ></p>
                   </div>
 
                   <!-- Instructions -->

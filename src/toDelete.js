@@ -239,12 +239,23 @@ export function initCloudFormationButton() {
     arnInput.addEventListener("input", updateCloudFormationUrl);
   }
 
-  // Initialize launch button as disabled
+  // Handle click prevention for anchor tag when fields are missing
   const launchBtn = document.getElementById("cloudformation-launch-btn");
   if (launchBtn) {
-    launchBtn.disabled = true;
-    launchBtn.classList.add('opacity-50', 'cursor-not-allowed');
-    launchBtn.classList.remove('hover:bg-orange-600');
+    launchBtn.addEventListener("click", (e) => {
+      const domain = (domainInput?.value || "").trim();
+      const githubRepo = (githubRepoInput?.value || "").trim();
+      const arn = (arnInput?.value || "").trim();
+      
+      if (!domain || !arn || !githubRepo) {
+        e.preventDefault();
+        // Scroll to error message
+        const errorMsg = document.getElementById("cloudformation-missing-fields-error");
+        if (errorMsg) {
+          errorMsg.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
+    });
   }
 
   updateCloudFormationUrl();
@@ -254,9 +265,9 @@ function updateCloudFormationUrl() {
   const launchBtn = document.getElementById("cloudformation-launch-btn");
   if (!launchBtn) return;
 
-  const domainInput = document.getElementById("cloudformation-domain-input");
+  const domainInput = document.getElementById("domain-input");
   const githubRepoInput = document.getElementById("github-repo-input");
-  const arnInput = document.getElementById("cloudformation-arn-input");
+  const arnInput = document.getElementById("arn-input");
 
   const domain = (domainInput?.value || "").trim();
   const githubRepo = (githubRepoInput?.value || "").trim();
@@ -275,6 +286,9 @@ function updateCloudFormationUrl() {
   }
   if (!githubRepo) {
     missingFields.push("GitHub repository (set it in the repo creation section)");
+  } else if (!githubRepo.includes('/') || githubRepo.includes('.git') || githubRepo.includes('github.com')) {
+    // Invalid GitHub repo format
+    missingFields.push("Valid GitHub repository format (username/repo)");
   }
   
   // Show missing fields error if any
@@ -317,18 +331,16 @@ function updateCloudFormationUrl() {
 
   launchBtn.href = finalUrl;
   
-  // Enable/disable button based on required fields
-  if (launchBtn) {
-    const hasRequiredFields = missingFields.length === 0;
-    if (!hasRequiredFields) {
-      launchBtn.disabled = true;
-      launchBtn.classList.add('opacity-50', 'cursor-not-allowed');
-      launchBtn.classList.remove('hover:bg-orange-600');
-    } else {
-      launchBtn.disabled = false;
-      launchBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-      launchBtn.classList.add('hover:bg-orange-600');
-    }
+  // Update button visual state based on required fields (anchor tags can't be disabled)
+  const hasRequiredFields = missingFields.length === 0;
+  if (!hasRequiredFields) {
+    launchBtn.classList.add('opacity-50', 'cursor-not-allowed');
+    launchBtn.classList.remove('hover:from-orange-600', 'hover:to-yellow-600');
+    launchBtn.style.pointerEvents = 'auto'; // Keep clickable to show error
+  } else {
+    launchBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+    launchBtn.classList.add('hover:from-orange-600', 'hover:to-yellow-600');
+    launchBtn.style.pointerEvents = '';
   }
 }
 
