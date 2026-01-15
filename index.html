@@ -703,22 +703,47 @@
                       class="text-xs text-red-600 dark:text-red-400 hidden mt-1"
                     ></p>
                   </div>
-                  <div
-                    class="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 border border-slate-200 dark:border-slate-700 font-mono text-xs space-y-1"
-                  >
-                    <div class="text-slate-500">git init</div>
-                    <div class="text-slate-500">git add .</div>
-                    <div class="text-slate-500">
-                      git commit -m "Initial commit"
+                  <div class="mt-2 space-y-2">
+                    <!-- git remote add command -->
+                    <div
+                      class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-slate-100 dark:bg-slate-800 rounded-lg p-2 md:p-3 border border-slate-200 dark:border-slate-700"
+                    >
+                      <code
+                        class="flex-1 text-purple-600 dark:text-purple-400 font-mono text-xs md:text-sm break-all"
+                        id="git-remote-command"
+                        >git remote add origin
+                        https://github.com/USERNAME/REPO.git</code
+                      >
+                      <button
+                        class="copy-btn flex-shrink-0 px-3 py-2 md:px-3 md:py-1.5 bg-purple-500 hover:bg-purple-600 dark:bg-purple-600 dark:hover:bg-purple-700 text-white rounded text-xs md:text-xs font-medium transition-colors duration-200 flex items-center gap-1.5 min-h-[44px] md:min-h-0 touch-manipulation"
+                        data-copy-target="#git-remote-command"
+                        aria-label="Copy git remote command"
+                        type="button"
+                      >
+                        <span class="copy-icon text-base md:text-sm">📋</span>
+                        <span class="copy-text">Copy</span>
+                      </button>
                     </div>
-                    <div class="text-purple-600 dark:text-purple-400">
-                      git remote add origin https://github.com/USERNAME/REPO.git
+                    <!-- git push command -->
+                    <div
+                      class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-slate-100 dark:bg-slate-800 rounded-lg p-2 md:p-3 border border-slate-200 dark:border-slate-700"
+                    >
+                      <code
+                        class="flex-1 text-purple-600 dark:text-purple-400 font-mono text-xs md:text-sm break-all"
+                        id="git-push-command"
+                        >git push -u origin main</code
+                      >
+                      <button
+                        class="copy-btn flex-shrink-0 px-3 py-2 md:px-3 md:py-1.5 bg-purple-500 hover:bg-purple-600 dark:bg-purple-600 dark:hover:bg-purple-700 text-white rounded text-xs md:text-xs font-medium transition-colors duration-200 flex items-center gap-1.5 min-h-[44px] md:min-h-0 touch-manipulation"
+                        data-copy-target="#git-push-command"
+                        aria-label="Copy git push command"
+                        type="button"
+                      >
+                        <span class="copy-icon text-base md:text-sm">📋</span>
+                        <span class="copy-text">Copy</span>
+                      </button>
                     </div>
-                    <div class="text-slate-500">git push -u origin main</div>
                   </div>
-                  <p class="mt-2 text-xs text-slate-500 italic">
-                    Required before CloudFormation so the template URL works.
-                  </p>
                 </div>
               </div>
 

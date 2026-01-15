@@ -137,6 +137,26 @@ export function initDomainInput() {
 }
 
 /**
+ * Update git commands based on GitHub repo input
+ */
+function updateGitCommands() {
+  const githubRepoInput = document.getElementById("github-repo-input");
+  const gitRemoteCommand = document.getElementById("git-remote-command");
+
+  if (!githubRepoInput || !gitRemoteCommand) return;
+
+  const githubRepo = (githubRepoInput.value || "").trim();
+
+  if (githubRepo && githubRepo.includes('/') && !githubRepo.includes('.git') && !githubRepo.includes('github.com')) {
+    // Valid format: username/repo
+    gitRemoteCommand.textContent = `git remote add origin https://github.com/${githubRepo}.git`;
+  } else {
+    // Default placeholder
+    gitRemoteCommand.textContent = 'git remote add origin https://github.com/USERNAME/REPO.git';
+  }
+}
+
+/**
  * Initialize GitHub repo validation in repo creation section
  */
 export function initGitHubRepoValidation() {
@@ -190,10 +210,15 @@ export function initGitHubRepoValidation() {
         githubRepoInput.classList.remove('border-red-500');
       }
     }
+
+    // Update git commands whenever input changes
+    updateGitCommands();
   };
 
   githubRepoInput.addEventListener("input", validateRepo);
   validateRepo();
+  // Also update git commands on initial load
+  updateGitCommands();
 }
 
 /**

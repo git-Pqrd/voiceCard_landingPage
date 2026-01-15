@@ -931,6 +931,10 @@ video {
   overflow-x: hidden;
 }
 
+.whitespace-pre {
+  white-space: pre;
+}
+
 .break-all {
   word-break: break-all;
 }
