@@ -28,11 +28,29 @@ jobs:
       - name: Build site
         run: npm run build
 
+      - name: Validate AWS configuration
+        run: |
+          if [ -z "${{ vars.AWS_ROLE_ARN }}" ]; then
+            echo "Error: AWS_ROLE_ARN variable is not set in GitHub repository variables"
+            echo "Please set it in: Settings > Secrets and variables > Actions > Variables"
+            exit 1
+          fi
+          if [ -z "${{ vars.S3_BUCKET }}" ]; then
+            echo "Error: S3_BUCKET variable is not set in GitHub repository variables"
+            exit 1
+          fi
+          if [ -z "${{ vars.CLOUDFRONT_ID }}" ]; then
+            echo "Error: CLOUDFRONT_ID variable is not set in GitHub repository variables"
+            exit 1
+          fi
+          echo "All required variables are set"
+
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
           aws-region: us-east-1
+          role-session-name: GitHubActions-Deploy
 
       - name: Sync to S3
         run: |
