@@ -48,7 +48,7 @@
   </head>
 
   <body
-    class="w-full min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-gray-950 dark:via-slate-900 dark:to-purple-950 transition-all duration-500 relative overflow-x-hidden"
+    class="w-full min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-gray-950 dark:via-slate-900 dark:to-purple-950 transition-all duration-500 relative overflow-x-hidden pb-20"
   >
     <!-- Animated Background Orbs -->
     <div
@@ -90,25 +90,7 @@
     <div
       class="max-w-6xl mx-auto px-4 md:px-6 pt-6 md:pt-16 pb-2 md:pb-4 relative z-10"
     >
-      <!-- Progress Indicator -->
-      <div class="fixed top-6 left-6 right-20 z-40 max-w-md">
-        <div class="glass-card rounded-2xl shadow-xl p-4 md:p-6">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="text-lg md:text-xl font-bold text-slate-800 dark:text-white">
-              📊 Deployment Progress
-            </h3>
-            <span id="progress-percentage" class="text-2xl md:text-3xl font-bold gradient-text">
-              0%
-            </span>
-          </div>
-          <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 md:h-4 overflow-hidden">
-            <div id="progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
-          </div>
-          <div class="mt-3 text-sm text-slate-600 dark:text-slate-400">
-            <span id="completed-count">0</span> of <span id="total-count">0</span> steps completed
-          </div>
-        </div>
-      </div>
+      
 
       <!-- Hero Section -->
       <div class="mb-20 text-center">
@@ -278,26 +260,29 @@
               </div>
               <div class="flex-1 min-w-0">
                 <div
-                  class="text-base md:text-lg lg:text-xl font-semibold text-slate-800 dark:text-white mb-1"
+                  class="text-base md:text-lg lg:text-xl font-semibold text-slate-800 dark:text-white mb-3"
                 >
-                  Create a public certificate in ACM (us-east-1)
+                  Create SSL certificate in AWS Certificate Manager
                 </div>
-                <div class="text-sm text-slate-600 dark:text-slate-400">
-                  Click
+                <div class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                  Click the button below to open AWS Certificate Manager. You'll need to add both:
+                  <span class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">example.com</span> and 
+                  <span class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">www.example.com</span>
+                  <br class="hidden sm:inline">
+                  <span class="text-xs text-slate-500 dark:text-slate-400">Must be in us-east-1 region for CloudFront</span>
+                </div>
+                <div class="flex justify-center">
                   <a
+                    href="https://us-east-1.console.aws.amazon.com/acm/home?region=us-east-1#/certificates/request/public"
                     target="_blank"
                     rel="noopener noreferrer"
-                    href="https://us-east-1.console.aws.amazon.com/acm/home?region=us-east-1#/certificates/request/public"
-                    class="font-bold"
-                    >this link to create both the root domain and the www. </a
-                  ><br />
-                  For "Fully qualified domain name," enter both your root domain
-                  (e.g.,
-                  <span class="font-mono font-semibold">example.com</span>) and
-                  the <span class="font-mono font-semibold">www.</span> version
-                  (e.g.,
-                  <span class="font-mono font-semibold">www.example.com</span>),
-                  so the certificate covers both.
+                    class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 active:scale-95"
+                  >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                    Create Certificate in AWS
+                  </a>
                 </div>
               </div>
             </label>
@@ -759,20 +744,18 @@
                   </div>
 
                   <!-- Launch Stack button -->
-                  <div class="flex justify-center md:justify-start">
+                  <div class="flex justify-center">
                     <a
                       id="cloudformation-launch-btn"
                       href="https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review"
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label="Launch CloudFormation Stack"
-                      class="inline-block transition-transform hover:scale-105 active:scale-95 filter hover:brightness-110"
+                      class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 active:scale-95"
                     >
-                      <img
-                        src="https://cdn.jsdelivr.net/gh/buildkite/cloudformation-launch-stack-button-svg@master/launch-stack.svg"
-                        alt="Launch Stack"
-                        style="height: 44px; width: auto; display: inline-block"
-                      />
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                      </svg>
+                      Launch CloudFormation Stack
                     </a>
                   </div>
 
@@ -1139,6 +1122,30 @@
             </label>
           </li>
         </ul>
+      </div>
+    </div>
+
+    <!-- Progress Footer -->
+    <div class="fixed bottom-0 left-0 right-0 z-40 glass-card border-t border-slate-200 dark:border-slate-700">
+      <div class="max-w-6xl mx-auto px-4 md:px-6 py-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <h3 class="text-sm font-semibold text-slate-800 dark:text-white">
+              📊 Deployment Progress
+            </h3>
+            <span id="progress-percentage" class="text-lg font-bold gradient-text">
+              0%
+            </span>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-32 bg-slate-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
+              <div id="progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+            </div>
+            <div class="text-sm text-slate-600 dark:text-slate-400">
+              <span id="completed-count">0</span> of <span id="total-count">0</span> steps
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

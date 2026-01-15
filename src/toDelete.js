@@ -27,7 +27,6 @@ export function initTodoCheckboxes() {
   updateProgress();
 }
 
-
 /**
  * Copy buttons.
  *
@@ -129,7 +128,7 @@ export function initDomainInput() {
 
     if (cloneCommand) {
       const folder = projectName || "easy-static-website";
-      cloneCommand.textContent = `git clone https://github.com/your-username/easy-static-website.git ${folder}`;
+      cloneCommand.textContent = `git clone https://github.com/git-Pqrd/easy-static.git ${folder}`;
     }
   };
 
@@ -202,8 +201,9 @@ function updateCloudFormationUrl() {
   }
 
   // Build final URL
-  const baseUrl = "https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review";
-  
+  const baseUrl =
+    "https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review";
+
   if (hashParams.length > 0) {
     launchBtn.href = `${baseUrl}?${hashParams.join("&")}`;
   } else {
@@ -215,31 +215,35 @@ function updateCloudFormationUrl() {
  * Update progress indicator based on checkbox completion
  */
 export function updateProgress() {
-  const checkboxes = document.querySelectorAll('input[type="checkbox"][data-id]');
-  const checkedBoxes = document.querySelectorAll('input[type="checkbox"][data-id]:checked');
-  
+  const checkboxes = document.querySelectorAll(
+    'input[type="checkbox"][data-id]'
+  );
+  const checkedBoxes = document.querySelectorAll(
+    'input[type="checkbox"][data-id]:checked'
+  );
+
   const total = checkboxes.length;
   const completed = checkedBoxes.length;
   const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-  
+
   // Update progress bar
-  const progressBar = document.getElementById('progress-bar');
-  const progressPercentage = document.getElementById('progress-percentage');
-  const completedCount = document.getElementById('completed-count');
-  const totalCount = document.getElementById('total-count');
-  
+  const progressBar = document.getElementById("progress-bar");
+  const progressPercentage = document.getElementById("progress-percentage");
+  const completedCount = document.getElementById("completed-count");
+  const totalCount = document.getElementById("total-count");
+
   if (progressBar) {
     progressBar.style.width = `${percentage}%`;
   }
-  
+
   if (progressPercentage) {
     progressPercentage.textContent = `${percentage}%`;
   }
-  
+
   if (completedCount) {
     completedCount.textContent = completed;
   }
-  
+
   if (totalCount) {
     totalCount.textContent = total;
   }
