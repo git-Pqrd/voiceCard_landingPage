@@ -147,32 +147,44 @@ function updateGitCommands() {
 
   const githubRepo = (githubRepoInput.value || "").trim();
 
-  if (githubRepo && githubRepo.includes('/') && !githubRepo.includes('.git') && !githubRepo.includes('github.com')) {
+  if (
+    githubRepo &&
+    githubRepo.includes("/") &&
+    !githubRepo.includes(".git") &&
+    !githubRepo.includes("github.com")
+  ) {
     // Valid format: username/repo
     gitRemoteCommand.textContent = `git remote set-url origin https://github.com/${githubRepo}.git`;
   } else {
     // Default placeholder
-    gitRemoteCommand.textContent = 'git remote set-url origin https://github.com/USERNAME/REPO.git';
+    gitRemoteCommand.textContent =
+      "git remote set-url origin https://github.com/USERNAME/REPO.git";
   }
 }
 
 /**
- * Update GitHub secrets link based on GitHub repo input
+ * Update GitHub vars link based on GitHub repo input
  */
-function updateGitHubSecretsLink() {
+function updateGitHubVarsLink() {
   const githubRepoInput = document.getElementById("github-repo-input");
-  const githubSecretsLink = document.getElementById("github-secrets-link");
+  const githubVarsLink = document.getElementById("github-vars-link");
 
-  if (!githubRepoInput || !githubSecretsLink) return;
+  if (!githubRepoInput || !githubVarsLink) return;
 
   const githubRepo = (githubRepoInput.value || "").trim();
 
-  if (githubRepo && githubRepo.includes('/') && !githubRepo.includes('.git') && !githubRepo.includes('github.com')) {
+  if (
+    githubRepo &&
+    githubRepo.includes("/") &&
+    !githubRepo.includes(".git") &&
+    !githubRepo.includes("github.com")
+  ) {
     // Valid format: username/repo
-    githubSecretsLink.href = `https://github.com/${githubRepo}/settings/secrets/actions`;
+    githubVarsLink.href = `https://github.com/${githubRepo}/settings/variables/actions`;
   } else {
     // Default placeholder
-    githubSecretsLink.href = 'https://github.com/USERNAME/REPO/settings/secrets/actions';
+    githubVarsLink.href =
+      "https://github.com/USERNAME/REPO/settings/variables/actions";
   }
 }
 
@@ -190,57 +202,61 @@ export function initGitHubRepoValidation() {
 
     // Validate GitHub repo format if provided
     if (githubRepo) {
-      if (githubRepo.includes('.git')) {
+      if (githubRepo.includes(".git")) {
         if (githubRepoError) {
           githubRepoError.textContent = "Remove '.git' from repository name";
-          githubRepoError.classList.remove('hidden');
+          githubRepoError.classList.remove("hidden");
         }
         if (githubRepoInput) {
-          githubRepoInput.classList.add('border-red-500');
+          githubRepoInput.classList.add("border-red-500");
         }
-      } else if (githubRepo.includes('github.com') || githubRepo.includes('https://')) {
+      } else if (
+        githubRepo.includes("github.com") ||
+        githubRepo.includes("https://")
+      ) {
         if (githubRepoError) {
-          githubRepoError.textContent = "Use format: username/repo (not full URL)";
-          githubRepoError.classList.remove('hidden');
+          githubRepoError.textContent =
+            "Use format: username/repo (not full URL)";
+          githubRepoError.classList.remove("hidden");
         }
         if (githubRepoInput) {
-          githubRepoInput.classList.add('border-red-500');
+          githubRepoInput.classList.add("border-red-500");
         }
-      } else if (!githubRepo.includes('/')) {
+      } else if (!githubRepo.includes("/")) {
         if (githubRepoError) {
           githubRepoError.textContent = "Use format: username/repo";
-          githubRepoError.classList.remove('hidden');
+          githubRepoError.classList.remove("hidden");
         }
         if (githubRepoInput) {
-          githubRepoInput.classList.add('border-red-500');
+          githubRepoInput.classList.add("border-red-500");
         }
       } else {
         if (githubRepoError) {
-          githubRepoError.classList.add('hidden');
+          githubRepoError.classList.add("hidden");
         }
         if (githubRepoInput) {
-          githubRepoInput.classList.remove('border-red-500');
+          githubRepoInput.classList.remove("border-red-500");
         }
       }
     } else {
       if (githubRepoError) {
-        githubRepoError.classList.add('hidden');
+        githubRepoError.classList.add("hidden");
       }
       if (githubRepoInput) {
-        githubRepoInput.classList.remove('border-red-500');
+        githubRepoInput.classList.remove("border-red-500");
       }
     }
 
     // Update git commands and secrets link whenever input changes
     updateGitCommands();
-    updateGitHubSecretsLink();
+    updateGitHubVarsLink();
   };
 
   githubRepoInput.addEventListener("input", validateRepo);
   validateRepo();
   // Also update git commands and secrets link on initial load
   updateGitCommands();
-  updateGitHubSecretsLink();
+  updateGitHubVarsLink();
 }
 
 /**
@@ -268,11 +284,13 @@ export function initCloudFormationButton() {
       const domain = (domainInput?.value || "").trim();
       const githubRepo = (githubRepoInput?.value || "").trim();
       const arn = (arnInput?.value || "").trim();
-      
+
       if (!domain || !arn || !githubRepo) {
         e.preventDefault();
         // Scroll to error message
-        const errorMsg = document.getElementById("cloudformation-missing-fields-error");
+        const errorMsg = document.getElementById(
+          "cloudformation-missing-fields-error"
+        );
         if (errorMsg) {
           errorMsg.scrollIntoView({ behavior: "smooth", block: "center" });
         }
@@ -297,9 +315,11 @@ function updateCloudFormationUrl() {
   const githubBranch = "main";
 
   // Check for missing fields
-  const missingFieldsError = document.getElementById("cloudformation-missing-fields-error");
+  const missingFieldsError = document.getElementById(
+    "cloudformation-missing-fields-error"
+  );
   const missingFields = [];
-  
+
   if (!domain) {
     missingFields.push("Domain name");
   }
@@ -307,20 +327,26 @@ function updateCloudFormationUrl() {
     missingFields.push("ACM certificate ARN");
   }
   if (!githubRepo) {
-    missingFields.push("GitHub repository (set it in the repo creation section)");
-  } else if (!githubRepo.includes('/') || githubRepo.includes('.git') || githubRepo.includes('github.com')) {
+    missingFields.push(
+      "GitHub repository (set it in the repo creation section)"
+    );
+  } else if (
+    !githubRepo.includes("/") ||
+    githubRepo.includes(".git") ||
+    githubRepo.includes("github.com")
+  ) {
     // Invalid GitHub repo format
     missingFields.push("Valid GitHub repository format (username/repo)");
   }
-  
+
   // Show missing fields error if any
   if (missingFieldsError) {
     if (missingFields.length > 0) {
       const fieldsList = missingFields.join(", ");
       missingFieldsError.textContent = `Please enter: ${fieldsList}`;
-      missingFieldsError.classList.remove('hidden');
+      missingFieldsError.classList.remove("hidden");
     } else {
-      missingFieldsError.classList.add('hidden');
+      missingFieldsError.classList.add("hidden");
     }
   }
 
@@ -352,17 +378,17 @@ function updateCloudFormationUrl() {
   }
 
   launchBtn.href = finalUrl;
-  
+
   // Update button visual state based on required fields (anchor tags can't be disabled)
   const hasRequiredFields = missingFields.length === 0;
   if (!hasRequiredFields) {
-    launchBtn.classList.add('opacity-50', 'cursor-not-allowed');
-    launchBtn.classList.remove('hover:from-orange-600', 'hover:to-yellow-600');
-    launchBtn.style.pointerEvents = 'auto'; // Keep clickable to show error
+    launchBtn.classList.add("opacity-50", "cursor-not-allowed");
+    launchBtn.classList.remove("hover:from-orange-600", "hover:to-yellow-600");
+    launchBtn.style.pointerEvents = "auto"; // Keep clickable to show error
   } else {
-    launchBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-    launchBtn.classList.add('hover:from-orange-600', 'hover:to-yellow-600');
-    launchBtn.style.pointerEvents = '';
+    launchBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    launchBtn.classList.add("hover:from-orange-600", "hover:to-yellow-600");
+    launchBtn.style.pointerEvents = "";
   }
 }
 
