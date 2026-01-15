@@ -4,6 +4,7 @@ import {
   initCopyButtons,
   initDomainInput,
   initCloudFormationButton,
+  initGitHubRepoValidation,
 } from "./toDelete";
 
 /**
@@ -36,5 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initTodoCheckboxes();
   initCopyButtons();
   initDomainInput();
+  initGitHubRepoValidation();
   initCloudFormationButton();
 });

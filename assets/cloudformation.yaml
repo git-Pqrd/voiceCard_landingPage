@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Description: Easy Static Site - S3 + CloudFront with external ACM certificate (us-east-1 only)
 
 Rules:
@@ -19,7 +19,7 @@ Parameters:
     ConstraintDescription: Must be a valid ACM certificate ARN in us-east-1
   GitHubRepo:
     Type: String
-    Description: GitHub repo for OIDC (format: username/repo)
+    Description: "GitHub repo for OIDC (format: username/repo)"
   GitHubBranch:
     Type: String
     Default: main
@@ -53,23 +53,24 @@ Resources:
         SigningBehavior: always
         SigningProtocol: sigv4
 
-  # S3 Bucket Policy for OAC
   SiteBucketPolicy:
     Type: AWS::S3::BucketPolicy
+    DependsOn: Distribution
     Properties:
       Bucket: !Ref SiteBucket
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
-          - Sid: CloudFrontAccess
+          - Sid: AllowCloudFrontServicePrincipalReadOnly
             Effect: Allow
             Principal:
               Service: cloudfront.amazonaws.com
-            Action: s3:GetObject
+            Action:
+              - s3:GetObject
             Resource: !Sub "${SiteBucket.Arn}/*"
             Condition:
-              StringEquals:
-                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
+              StringLike:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/*"
 
   # CloudFront Function for www to apex redirect
   WwwRedirectFunction:
@@ -108,7 +109,7 @@ Resources:
           TargetOriginId: S3Origin
           ViewerProtocolPolicy: redirect-to-https
           Compress: true
-          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6  # Managed-CachingOptimized
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # Managed-CachingOptimized
           FunctionAssociations:
             - EventType: viewer-request
               FunctionARN: !GetAtt WwwRedirectFunction.FunctionARN
@@ -149,7 +150,7 @@ Resources:
     Properties:
       RoleName: !Sub "${AWS::StackName}-github-actions"
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Principal:
@@ -163,7 +164,7 @@ Resources:
       Policies:
         - PolicyName: DeployToS3AndCloudFront
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
               - Sid: S3Access
                 Effect: Allow

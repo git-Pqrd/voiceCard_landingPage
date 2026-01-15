@@ -137,6 +137,66 @@ export function initDomainInput() {
 }
 
 /**
+ * Initialize GitHub repo validation in repo creation section
+ */
+export function initGitHubRepoValidation() {
+  const githubRepoInput = document.getElementById("github-repo-input");
+  const githubRepoError = document.getElementById("github-repo-error");
+
+  if (!githubRepoInput) return;
+
+  const validateRepo = () => {
+    const githubRepo = (githubRepoInput?.value || "").trim();
+
+    // Validate GitHub repo format if provided
+    if (githubRepo) {
+      if (githubRepo.includes('.git')) {
+        if (githubRepoError) {
+          githubRepoError.textContent = "Remove '.git' from repository name";
+          githubRepoError.classList.remove('hidden');
+        }
+        if (githubRepoInput) {
+          githubRepoInput.classList.add('border-red-500');
+        }
+      } else if (githubRepo.includes('github.com') || githubRepo.includes('https://')) {
+        if (githubRepoError) {
+          githubRepoError.textContent = "Use format: username/repo (not full URL)";
+          githubRepoError.classList.remove('hidden');
+        }
+        if (githubRepoInput) {
+          githubRepoInput.classList.add('border-red-500');
+        }
+      } else if (!githubRepo.includes('/')) {
+        if (githubRepoError) {
+          githubRepoError.textContent = "Use format: username/repo";
+          githubRepoError.classList.remove('hidden');
+        }
+        if (githubRepoInput) {
+          githubRepoInput.classList.add('border-red-500');
+        }
+      } else {
+        if (githubRepoError) {
+          githubRepoError.classList.add('hidden');
+        }
+        if (githubRepoInput) {
+          githubRepoInput.classList.remove('border-red-500');
+        }
+      }
+    } else {
+      if (githubRepoError) {
+        githubRepoError.classList.add('hidden');
+      }
+      if (githubRepoInput) {
+        githubRepoInput.classList.remove('border-red-500');
+      }
+    }
+  };
+
+  githubRepoInput.addEventListener("input", validateRepo);
+  validateRepo();
+}
+
+/**
  * Updates CloudFormation launch button URL with parameters from form inputs.
  */
 export function initCloudFormationButton() {
@@ -154,6 +214,14 @@ export function initCloudFormationButton() {
     arnInput.addEventListener("input", updateCloudFormationUrl);
   }
 
+  // Initialize launch button as disabled
+  const launchBtn = document.getElementById("cloudformation-launch-btn");
+  if (launchBtn) {
+    launchBtn.disabled = true;
+    launchBtn.classList.add('opacity-50', 'cursor-not-allowed');
+    launchBtn.classList.remove('hover:bg-orange-600');
+  }
+
   updateCloudFormationUrl();
 }
 
@@ -161,53 +229,81 @@ function updateCloudFormationUrl() {
   const launchBtn = document.getElementById("cloudformation-launch-btn");
   if (!launchBtn) return;
 
-  const domainInput = document.getElementById("domain-input");
+  const domainInput = document.getElementById("cloudformation-domain-input");
   const githubRepoInput = document.getElementById("github-repo-input");
-  const arnInput = document.getElementById("arn-input");
+  const arnInput = document.getElementById("cloudformation-arn-input");
 
   const domain = (domainInput?.value || "").trim();
   const githubRepo = (githubRepoInput?.value || "").trim();
   const arn = (arnInput?.value || "").trim();
   const githubBranch = "main";
 
-  // Build template URL from GitHub repo
-  let templateUrl = "";
-  if (githubRepo && githubRepo.includes("/")) {
-    const [username, repo] = githubRepo.split("/");
-    if (username && repo) {
-      templateUrl = `https://raw.githubusercontent.com/${username}/${repo}/main/assets/cloudformation.yaml`;
+  // Check for missing fields
+  const missingFieldsError = document.getElementById("cloudformation-missing-fields-error");
+  const missingFields = [];
+  
+  if (!domain) {
+    missingFields.push("Domain name");
+  }
+  if (!arn) {
+    missingFields.push("ACM certificate ARN");
+  }
+  if (!githubRepo) {
+    missingFields.push("GitHub repository (set it in the repo creation section)");
+  }
+  
+  // Show missing fields error if any
+  if (missingFieldsError) {
+    if (missingFields.length > 0) {
+      const fieldsList = missingFields.join(", ");
+      missingFieldsError.textContent = `Please enter: ${fieldsList}`;
+      missingFieldsError.classList.remove('hidden');
+    } else {
+      missingFieldsError.classList.add('hidden');
     }
   }
 
-  // Build query params for after the hash fragment
-  // CloudFormation console URLs have params after #/stacks/create/review?
-  const hashParams = [];
+  // Build CloudFormation URL with proper format
+  const templateUrl =
+    "https://s3.us-east-1.amazonaws.com/easystatic.piquard.codes/assets/cloudformation.yaml";
 
-  if (templateUrl) {
-    hashParams.push(`templateUrl=${encodeURIComponent(templateUrl)}`);
-  }
+  // Base URL with required templateURL parameter
+  let finalUrl = `https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=${encodeURIComponent(
+    templateUrl
+  )}`;
+
+  // Add other parameters
   if (domain) {
-    // Generate stack name from domain
-    const stackName = domain.replace(/\./g, "-") + "-site";
-    hashParams.push(`stackName=${encodeURIComponent(stackName)}`);
-    hashParams.push(`param_DomainName=${encodeURIComponent(domain)}`);
+    // Generate stack name from domain with date and time
+    const now = new Date();
+    const date = now.toISOString().slice(0, 10).replace(/-/g, "");
+    const time = now.toTimeString().slice(0, 5).replace(/:/g, "");
+    const stackName = domain.replace(/\./g, "-") + "-site-" + date + time;
+    finalUrl += `&stackName=${encodeURIComponent(stackName)}`;
+    finalUrl += `&param_DomainName=${encodeURIComponent(domain)}`;
   }
   if (arn) {
-    hashParams.push(`param_AcmCertificateArn=${encodeURIComponent(arn)}`);
+    finalUrl += `&param_AcmCertificateArn=${encodeURIComponent(arn)}`;
   }
   if (githubRepo) {
-    hashParams.push(`param_GitHubRepo=${encodeURIComponent(githubRepo)}`);
-    hashParams.push(`param_GitHubBranch=${encodeURIComponent(githubBranch)}`);
+    finalUrl += `&param_GitHubRepo=${encodeURIComponent(githubRepo)}`;
+    finalUrl += `&param_GitHubBranch=${encodeURIComponent(githubBranch)}`;
   }
 
-  // Build final URL
-  const baseUrl =
-    "https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review";
-
-  if (hashParams.length > 0) {
-    launchBtn.href = `${baseUrl}?${hashParams.join("&")}`;
-  } else {
-    launchBtn.href = baseUrl;
+  launchBtn.href = finalUrl;
+  
+  // Enable/disable button based on required fields
+  if (launchBtn) {
+    const hasRequiredFields = missingFields.length === 0;
+    if (!hasRequiredFields) {
+      launchBtn.disabled = true;
+      launchBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      launchBtn.classList.remove('hover:bg-orange-600');
+    } else {
+      launchBtn.disabled = false;
+      launchBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      launchBtn.classList.add('hover:bg-orange-600');
+    }
   }
 }
 
