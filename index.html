@@ -186,19 +186,53 @@
         </div>
 
         <div class="space-y-3">
-          <div>
-            <label
-              for="domain-input"
-              class="block text-xs md:text-sm font-semibold text-slate-800 dark:text-white mb-1.5"
-            >
-              Domain Name
-            </label>
-            <input
-              type="text"
-              id="domain-input"
-              placeholder="example.com"
-              class="w-full px-3 py-2 md:px-4 md:py-2.5 rounded-lg bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 focus:border-purple-400 dark:focus:border-purple-500 focus:outline-none text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-all text-sm md:text-base"
-            />
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label
+                for="domain-input"
+                class="block text-xs md:text-sm font-semibold text-slate-800 dark:text-white mb-1.5"
+              >
+                Domain Name
+              </label>
+              <input
+                type="text"
+                id="domain-input"
+                placeholder="example.com"
+                class="w-full px-3 py-2 md:px-4 md:py-2.5 rounded-lg bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 focus:border-purple-400 dark:focus:border-purple-500 focus:outline-none text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-all text-sm md:text-base"
+              />
+            </div>
+            <div>
+              <label
+                class="block text-xs md:text-sm font-semibold text-slate-800 dark:text-white mb-1.5"
+              >
+                Include www subdomain?
+              </label>
+              <div class="flex items-center gap-3 h-[42px] md:h-[46px]">
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    id="include-www-toggle"
+                    class="sr-only peer"
+                    checked
+                  />
+                  <div
+                    class="w-11 h-6 bg-slate-300 dark:bg-slate-600 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"
+                  ></div>
+                </label>
+                <span
+                  id="www-toggle-label"
+                  class="text-sm text-slate-600 dark:text-slate-400"
+                >
+                  www.domain redirects to apex
+                </span>
+              </div>
+              <p
+                class="text-xs text-slate-500 dark:text-slate-500 mt-1"
+                id="www-toggle-hint"
+              >
+                Certificate must cover both domain.com and www.domain.com
+              </p>
+            </div>
           </div>
           <div>
             <label
@@ -263,17 +297,26 @@
                   Create SSL certificate in AWS Certificate Manager
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                  Click the button below to open AWS Certificate Manager. You'll
-                  need to add both:
-                  <span
-                    class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded"
-                    >example.com</span
-                  >
-                  and
-                  <span
-                    class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded"
-                    >www.example.com</span
-                  >
+                  Click the button below to open AWS Certificate Manager.
+                  <span id="cert-www-instructions">
+                    You'll need to add both:
+                    <span
+                      class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded"
+                      >example.com</span
+                    >
+                    and
+                    <span
+                      class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded"
+                      >www.example.com</span
+                    >
+                  </span>
+                  <span id="cert-no-www-instructions" class="hidden">
+                    You'll need to add:
+                    <span
+                      class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded"
+                      >example.com</span
+                    >
+                  </span>
                   <br class="hidden sm:inline" />
                   <span class="text-xs text-slate-500 dark:text-slate-400"
                     >Must be in us-east-1 region for CloudFront</span
@@ -337,9 +380,16 @@
                   Update DNS at your registrar to validate
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                  Copy the CNAME records from ACM and add them to your domain
-                  and it's www. version to registrar (namecheap, godaddy, etc.)
-                  so the certificate becomes valid.
+                  <span id="dns-validation-www-instructions">
+                    Copy the CNAME records from ACM and add them to your domain
+                    and its www. version at your registrar (namecheap, godaddy,
+                    etc.) so the certificate becomes valid.
+                  </span>
+                  <span id="dns-validation-no-www-instructions" class="hidden">
+                    Copy the CNAME record from ACM and add it to your domain at
+                    your registrar (namecheap, godaddy, etc.) so the certificate
+                    becomes valid.
+                  </span>
                 </div>
               </div>
             </label>
@@ -1056,46 +1106,82 @@
                   <p class="mb-2">
                     At your DNS provider (Cloudflare, GoDaddy, Namecheap, etc.):
                   </p>
-                  <ul class="space-y-1.5 ml-1">
-                    <li class="flex items-start gap-2">
-                      <span class="text-purple-500 dark:text-purple-400 mt-0.5"
-                        >→</span
-                      >
-                      <span
-                        ><strong>www.example.com</strong>: Add a
-                        <code
-                          class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-xs"
-                          >CNAME</code
+                  <!-- Instructions when www is included -->
+                  <div id="dns-cloudfront-www-instructions">
+                    <ul class="space-y-1.5 ml-1">
+                      <li class="flex items-start gap-2">
+                        <span
+                          class="text-purple-500 dark:text-purple-400 mt-0.5"
+                          >→</span
                         >
-                        pointing to your CloudFront domain</span
-                      >
-                    </li>
-                    <li class="flex items-start gap-2">
-                      <span class="text-purple-500 dark:text-purple-400 mt-0.5"
-                        >→</span
-                      >
-                      <span
-                        ><strong>example.com</strong> (apex): Use
-                        <code
-                          class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-xs"
-                          >ALIAS</code
+                        <span
+                          ><strong>www.example.com</strong>: Add a
+                          <code
+                            class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-xs"
+                            >CNAME</code
+                          >
+                          pointing to your CloudFront domain</span
                         >
-                        or
-                        <code
-                          class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-xs"
-                          >ANAME</code
+                      </li>
+                      <li class="flex items-start gap-2">
+                        <span
+                          class="text-purple-500 dark:text-purple-400 mt-0.5"
+                          >→</span
                         >
-                        if supported, or a flattened CNAME (Cloudflare supports
-                        this)</span
-                      >
-                    </li>
-                  </ul>
-                  <p
-                    class="mt-2 text-xs text-slate-500 dark:text-slate-500 italic"
-                  >
-                    Note: www.example.com automatically redirects to example.com
-                    via CloudFront.
-                  </p>
+                        <span
+                          ><strong>example.com</strong> (apex): Use
+                          <code
+                            class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-xs"
+                            >ALIAS</code
+                          >
+                          or
+                          <code
+                            class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-xs"
+                            >ANAME</code
+                          >
+                          if supported, or a flattened CNAME (Cloudflare
+                          supports this)</span
+                        >
+                      </li>
+                    </ul>
+                    <p
+                      class="mt-2 text-xs text-slate-500 dark:text-slate-500 italic"
+                    >
+                      Note: www.example.com automatically redirects to
+                      example.com via CloudFront.
+                    </p>
+                  </div>
+                  <!-- Instructions when www is NOT included -->
+                  <div id="dns-cloudfront-no-www-instructions" class="hidden">
+                    <ul class="space-y-1.5 ml-1">
+                      <li class="flex items-start gap-2">
+                        <span
+                          class="text-purple-500 dark:text-purple-400 mt-0.5"
+                          >→</span
+                        >
+                        <span
+                          ><strong>example.com</strong> (apex): Use
+                          <code
+                            class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-xs"
+                            >ALIAS</code
+                          >
+                          or
+                          <code
+                            class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-xs"
+                            >ANAME</code
+                          >
+                          if supported, or a flattened CNAME (Cloudflare
+                          supports this)</span
+                        >
+                      </li>
+                    </ul>
+                    <p
+                      class="mt-2 text-xs text-slate-500 dark:text-slate-500 italic"
+                    >
+                      Note: Only the apex domain is configured (no www
+                      redirect).
+                    </p>
+                  </div>
                 </div>
               </div>
 

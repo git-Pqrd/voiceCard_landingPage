@@ -12,9 +12,16 @@ Parameters:
   DomainName:
     Type: String
     Description: Your domain (e.g., example.com)
+  IncludeWww:
+    Type: String
+    Default: "Yes"
+    AllowedValues:
+      - "Yes"
+      - "No"
+    Description: Include www subdomain? (Yes = www.domain redirects to apex, No = apex only)
   AcmCertificateArn:
     Type: String
-    Description: ARN of your ACM certificate (must be in us-east-1, must cover domain + www)
+    Description: ARN of your ACM certificate (must be in us-east-1; must cover www if IncludeWww=Yes)
     AllowedPattern: "arn:aws:acm:us-east-1:[0-9]+:certificate/.*"
     ConstraintDescription: Must be a valid ACM certificate ARN in us-east-1
   GitHubRepo:
@@ -24,6 +31,9 @@ Parameters:
     Type: String
     Default: main
     Description: Branch for OIDC trust
+
+Conditions:
+  HasWwwSubdomain: !Equals [!Ref IncludeWww, "Yes"]
 
 Resources:
   # Lambda function to create OIDC provider if it doesn't exist
@@ -184,9 +194,10 @@ Resources:
               StringLike:
                 AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/*"
 
-  # CloudFront Function for www to apex redirect
+  # CloudFront Function for www to apex redirect (only created if IncludeWww=Yes)
   WwwRedirectFunction:
     Type: AWS::CloudFront::Function
+    Condition: HasWwwSubdomain
     Properties:
       Name: !Sub "${AWS::StackName}-www-redirect"
       AutoPublish: true
@@ -211,9 +222,11 @@ Resources:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
-        Aliases:
-          - !Ref DomainName
-          - !Sub "www.${DomainName}"
+        Aliases: !If
+          - HasWwwSubdomain
+          - - !Ref DomainName
+            - !Sub "www.${DomainName}"
+          - - !Ref DomainName
         DefaultRootObject: index.html
         DefaultCacheBehavior:
           AllowedMethods: [GET, HEAD, OPTIONS]
@@ -222,9 +235,11 @@ Resources:
           ViewerProtocolPolicy: redirect-to-https
           Compress: true
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # Managed-CachingOptimized
-          FunctionAssociations:
-            - EventType: viewer-request
-              FunctionARN: !GetAtt WwwRedirectFunction.FunctionARN
+          FunctionAssociations: !If
+            - HasWwwSubdomain
+            - - EventType: viewer-request
+                FunctionARN: !GetAtt WwwRedirectFunction.FunctionARN
+            - !Ref "AWS::NoValue"
         CustomErrorResponses:
           - ErrorCode: 403
             ResponseCode: 200

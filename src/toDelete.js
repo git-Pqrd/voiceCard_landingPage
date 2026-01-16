@@ -113,6 +113,7 @@ export function initDomainInput() {
   const domainInput = document.getElementById("domain-input");
   const projectNameDisplay = document.getElementById("project-name-display");
   const cloneCommand = document.getElementById("clone-command");
+  const includeWwwToggle = document.getElementById("include-www-toggle");
 
   if (!domainInput) return;
 
@@ -132,8 +133,58 @@ export function initDomainInput() {
     }
   };
 
+  const updateWwwInstructions = () => {
+    const includeWww = includeWwwToggle?.checked ?? true;
+
+    // Update toggle label and hint
+    const toggleLabel = document.getElementById("www-toggle-label");
+    const toggleHint = document.getElementById("www-toggle-hint");
+    if (toggleLabel) {
+      toggleLabel.textContent = includeWww
+        ? "www.domain redirects to apex"
+        : "Apex domain only (no www)";
+    }
+    if (toggleHint) {
+      toggleHint.textContent = includeWww
+        ? "Certificate must cover both domain.com and www.domain.com"
+        : "Certificate only needs to cover domain.com";
+    }
+
+    // Update certificate instructions
+    const certWww = document.getElementById("cert-www-instructions");
+    const certNoWww = document.getElementById("cert-no-www-instructions");
+    if (certWww) certWww.classList.toggle("hidden", !includeWww);
+    if (certNoWww) certNoWww.classList.toggle("hidden", includeWww);
+
+    // Update DNS validation instructions
+    const dnsValWww = document.getElementById(
+      "dns-validation-www-instructions"
+    );
+    const dnsValNoWww = document.getElementById(
+      "dns-validation-no-www-instructions"
+    );
+    if (dnsValWww) dnsValWww.classList.toggle("hidden", !includeWww);
+    if (dnsValNoWww) dnsValNoWww.classList.toggle("hidden", includeWww);
+
+    // Update DNS CloudFront instructions
+    const dnsCfWww = document.getElementById("dns-cloudfront-www-instructions");
+    const dnsCfNoWww = document.getElementById(
+      "dns-cloudfront-no-www-instructions"
+    );
+    if (dnsCfWww) dnsCfWww.classList.toggle("hidden", !includeWww);
+    if (dnsCfNoWww) dnsCfNoWww.classList.toggle("hidden", includeWww);
+
+    // Update CloudFormation URL
+    updateCloudFormationUrl();
+  };
+
   domainInput.addEventListener("input", update);
+  if (includeWwwToggle) {
+    includeWwwToggle.addEventListener("change", updateWwwInstructions);
+  }
+
   update();
+  updateWwwInstructions();
 }
 
 /**
@@ -266,6 +317,7 @@ export function initCloudFormationButton() {
   const domainInput = document.getElementById("domain-input");
   const githubRepoInput = document.getElementById("github-repo-input");
   const arnInput = document.getElementById("arn-input");
+  const includeWwwToggle = document.getElementById("include-www-toggle");
 
   if (domainInput) {
     domainInput.addEventListener("input", updateCloudFormationUrl);
@@ -275,6 +327,9 @@ export function initCloudFormationButton() {
   }
   if (arnInput) {
     arnInput.addEventListener("input", updateCloudFormationUrl);
+  }
+  if (includeWwwToggle) {
+    includeWwwToggle.addEventListener("change", updateCloudFormationUrl);
   }
 
   // Handle click prevention for anchor tag when fields are missing
@@ -308,11 +363,13 @@ function updateCloudFormationUrl() {
   const domainInput = document.getElementById("domain-input");
   const githubRepoInput = document.getElementById("github-repo-input");
   const arnInput = document.getElementById("arn-input");
+  const includeWwwToggle = document.getElementById("include-www-toggle");
 
   const domain = (domainInput?.value || "").trim();
   const githubRepo = (githubRepoInput?.value || "").trim();
   const arn = (arnInput?.value || "").trim();
   const githubBranch = "main";
+  const includeWww = includeWwwToggle?.checked ? "Yes" : "No";
 
   // Check for missing fields
   const missingFieldsError = document.getElementById(
@@ -369,6 +426,8 @@ function updateCloudFormationUrl() {
     finalUrl += `&stackName=${encodeURIComponent(stackName)}`;
     finalUrl += `&param_DomainName=${encodeURIComponent(domain)}`;
   }
+  // Always include IncludeWww parameter
+  finalUrl += `&param_IncludeWww=${encodeURIComponent(includeWww)}`;
   if (arn) {
     finalUrl += `&param_AcmCertificateArn=${encodeURIComponent(arn)}`;
   }
