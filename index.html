@@ -19,8 +19,17 @@
 
     <!-- Theme / Icons -->
     <meta name="theme-color" content="#0f172a" />
-    <link rel="icon" href="./assets/profile.ico" />
-    <link rel="apple-touch-icon" href="./assets/profile.png" />
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./assets/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="./assets/android-chrome-512x512.png" />
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="./assets/site.webmanifest" />
 
     <!-- CSS - Compiled by Tailwind CSS -->
     <link href="./src/output.css" rel="stylesheet" />
@@ -39,8 +48,10 @@
     <meta property="og:url" content="https://voicecard.app/" />
     <meta
       property="og:image"
-      content="https://voicecard.app/assets/profile.png"
+      content="https://voicecard.app/assets/android-chrome-512x512.png"
     />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
     <meta
       property="og:image:alt"
       content="VoiceCard - AI IELTS Speaking Practice"
@@ -56,7 +67,8 @@
       name="twitter:description"
       content="Master IELTS & TOEFL speaking with AI-powered spoken definition drills. Get instant feedback on fluency, vocabulary & coherence."
     />
-    <meta name="twitter:image" content="./assets/profile.png" />
+    <meta name="twitter:image" content="https://voicecard.app/assets/android-chrome-512x512.png" />
+    <meta name="twitter:image:alt" content="VoiceCard - AI IELTS Speaking Practice" />
 
     <!-- Additional SEO Keywords Meta -->
     <meta
@@ -973,8 +985,8 @@
             © 2026 VoiceCard. AI-powered IELTS & TOEFL speaking practice.
           </div>
           <div class="flex gap-4 sm:gap-6 text-xs sm:text-sm">
-            <a href="#" class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Privacy</a>
-            <a href="#" class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Terms</a>
+            <a href="privacy.html" class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Privacy</a>
+            <a href="terms.html" class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Terms</a>
             <a href="#" class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">Contact</a>
           </div>
         </div>
