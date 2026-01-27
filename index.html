@@ -183,6 +183,15 @@
           max-width: 100%;
         }
       }
+
+      /* Hide scrollbar for horizontal scroll */
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
     </style>
   </head>
 
@@ -450,6 +459,180 @@
       </section>
 
       <!-- ═══════════════════════════════════════════════════════════════════
+           SAMPLE DRILLS - HORIZONTAL SCROLL MOBILE / GRID DESKTOP
+      ═══════════════════════════════════════════════════════════════════ -->
+      <section class="mb-12 sm:mb-16 md:mb-24">
+        <div class="text-center mb-6 sm:mb-8">
+          <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white mb-2">
+            Sample Drills
+          </h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400 lg:hidden">Swipe to see more →</p>
+        </div>
+
+        <!-- Mobile: horizontal scroll / Desktop: 4-col grid -->
+        <div class="lg:hidden overflow-x-auto scrollbar-hide snap-x snap-mandatory py-4 px-6">
+          <div class="flex gap-4" style="width: max-content;">
+            <!-- Drill 1 - POOR -->
+            <div class="w-72 flex-shrink-0 snap-start">
+              <div class="glass-card rounded-xl p-4 border-2 border-red-500 dark:border-red-500 h-full shadow-none">
+                <div class="inline-block px-2 py-1 bg-sky-100 dark:bg-sky-900/30 rounded-full text-sky-700 dark:text-sky-300 text-xs font-semibold mb-2">Environment</div>
+                <h3 class="text-base font-semibold text-slate-800 dark:text-white mb-2">Environmental degradation</h3>
+                <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 mb-3 border border-slate-200 dark:border-slate-700">
+                  <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Response:</p>
+                  <p class="text-xs text-slate-700 dark:text-slate-300 italic">"Environmental degradation is... um... it's bad for the environment. Like pollution and stuff."</p>
+                </div>
+                <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-3 border border-red-200 dark:border-red-800">
+                  <p class="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">AI Feedback:</p>
+                  <p class="text-xs text-slate-700 dark:text-slate-300 mb-2">"Too vague. Avoid fillers ('um', 'stuff'). Lacks academic vocabulary."</p>
+                  <div class="flex gap-1">
+                    <span class="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 rounded text-xs font-medium text-red-700 dark:text-red-400">4/10</span>
+                    <span class="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 rounded text-xs font-medium text-red-700 dark:text-red-400">4/10</span>
+                    <span class="px-2 py-0.5 bg-white dark:bg-slate-800 rounded text-xs font-medium text-slate-600 dark:text-slate-400">5/10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Drill 2 - BELOW AVERAGE -->
+            <div class="w-72 flex-shrink-0 snap-start">
+              <div class="glass-card rounded-xl p-4 border-2 border-amber-500 dark:border-amber-500 h-full shadow-none">
+                <div class="inline-block px-2 py-1 bg-sky-100 dark:bg-sky-900/30 rounded-full text-sky-700 dark:text-sky-300 text-xs font-semibold mb-2">Society</div>
+                <h3 class="text-base font-semibold text-slate-800 dark:text-white mb-2">Social cohesion</h3>
+                <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 mb-3 border border-slate-200 dark:border-slate-700">
+                  <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Response:</p>
+                  <p class="text-xs text-slate-700 dark:text-slate-300 italic">"Social cohesion is when people... um... get along together. It makes society work better."</p>
+                </div>
+                <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border border-amber-200 dark:border-amber-800">
+                  <p class="text-xs font-semibold text-amber-700 dark:text-amber-300 mb-1">AI Feedback:</p>
+                  <p class="text-xs text-slate-700 dark:text-slate-300 mb-2">"Basic definition, lacks depth. Try 'unity,' 'solidarity,' or 'integration.'"</p>
+                  <div class="flex gap-1">
+                    <span class="px-2 py-0.5 bg-white dark:bg-slate-800 rounded text-xs font-medium text-slate-600 dark:text-slate-400">5/10</span>
+                    <span class="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 rounded text-xs font-medium text-amber-700 dark:text-amber-400">5/10</span>
+                    <span class="px-2 py-0.5 bg-white dark:bg-slate-800 rounded text-xs font-medium text-slate-600 dark:text-slate-400">6/10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Drill 3 - GOOD -->
+            <div class="w-72 flex-shrink-0 snap-start">
+              <div class="glass-card rounded-xl p-4 border-2 border-green-500 dark:border-green-500 h-full shadow-none">
+                <div class="inline-block px-2 py-1 bg-sky-100 dark:bg-sky-900/30 rounded-full text-sky-700 dark:text-sky-300 text-xs font-semibold mb-2">Technology</div>
+                <h3 class="text-base font-semibold text-slate-800 dark:text-white mb-2">Digital literacy</h3>
+                <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 mb-3 border border-slate-200 dark:border-slate-700">
+                  <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Response:</p>
+                  <p class="text-xs text-slate-700 dark:text-slate-300 italic">"Digital literacy means the ability to use technology properly, like finding reliable information online."</p>
+                </div>
+                <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border border-green-200 dark:border-green-800">
+                  <p class="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">AI Feedback:</p>
+                  <p class="text-xs text-slate-700 dark:text-slate-300 mb-2">"Good structure. Replace 'things like' with 'such as' for Band 8."</p>
+                  <div class="flex gap-1">
+                    <span class="px-2 py-0.5 bg-white dark:bg-slate-800 rounded text-xs font-medium text-slate-600 dark:text-slate-400">6/10</span>
+                    <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">7/10</span>
+                    <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">7/10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Drill 4 - EXCELLENT -->
+            <div class="w-72 flex-shrink-0 snap-start">
+              <div class="glass-card rounded-xl p-4 border-2 border-green-500 dark:border-green-500 h-full shadow-none">
+                <div class="inline-block px-2 py-1 bg-sky-100 dark:bg-sky-900/30 rounded-full text-sky-700 dark:text-sky-300 text-xs font-semibold mb-2">Education</div>
+                <h3 class="text-base font-semibold text-slate-800 dark:text-white mb-2">Critical thinking</h3>
+                <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 mb-3 border border-slate-200 dark:border-slate-700">
+                  <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Response:</p>
+                  <p class="text-xs text-slate-700 dark:text-slate-300 italic">"Critical thinking encompasses analyzing information objectively and forming reasoned judgments."</p>
+                </div>
+                <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border border-green-200 dark:border-green-800">
+                  <p class="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">AI Feedback:</p>
+                  <p class="text-xs text-slate-700 dark:text-slate-300 mb-2">"Excellent! Strong vocabulary ('encompasses,' 'objectively'). Band 8+ quality."</p>
+                  <div class="flex gap-1">
+                    <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">9/10</span>
+                    <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">8/10</span>
+                    <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">9/10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop: 4-col grid -->
+        <div class="hidden lg:grid lg:grid-cols-4 gap-4">
+          <!-- Drill 1 - POOR -->
+          <div class="glass-card rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+            <div class="inline-block px-2 py-1 bg-sky-100 dark:bg-sky-900/30 rounded-full text-sky-700 dark:text-sky-300 text-xs font-semibold mb-2">Environment</div>
+            <h3 class="text-base font-semibold text-slate-800 dark:text-white mb-2">Environmental degradation</h3>
+            <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 mb-3 border border-slate-200 dark:border-slate-700">
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Response:</p>
+              <p class="text-xs text-slate-700 dark:text-slate-300 italic">"Environmental degradation is... um... it's bad for the environment. Like pollution and stuff."</p>
+            </div>
+            <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-3 border border-red-200 dark:border-red-800">
+              <p class="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">AI Feedback:</p>
+              <p class="text-xs text-slate-700 dark:text-slate-300 mb-2">"Too vague. Avoid fillers ('um', 'stuff'). Lacks academic vocabulary."</p>
+              <div class="flex gap-1">
+                <span class="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 rounded text-xs font-medium text-red-700 dark:text-red-400">4/10</span>
+                <span class="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 rounded text-xs font-medium text-red-700 dark:text-red-400">4/10</span>
+                <span class="px-2 py-0.5 bg-white dark:bg-slate-800 rounded text-xs font-medium text-slate-600 dark:text-slate-400">5/10</span>
+              </div>
+            </div>
+          </div>
+          <!-- Drill 2 - BELOW AVERAGE -->
+          <div class="glass-card rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+            <div class="inline-block px-2 py-1 bg-sky-100 dark:bg-sky-900/30 rounded-full text-sky-700 dark:text-sky-300 text-xs font-semibold mb-2">Society</div>
+            <h3 class="text-base font-semibold text-slate-800 dark:text-white mb-2">Social cohesion</h3>
+            <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 mb-3 border border-slate-200 dark:border-slate-700">
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Response:</p>
+              <p class="text-xs text-slate-700 dark:text-slate-300 italic">"Social cohesion is when people... um... get along together. It makes society work better."</p>
+            </div>
+            <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 border border-amber-200 dark:border-amber-800">
+              <p class="text-xs font-semibold text-amber-700 dark:text-amber-300 mb-1">AI Feedback:</p>
+              <p class="text-xs text-slate-700 dark:text-slate-300 mb-2">"Basic definition, lacks depth. Try 'unity,' 'solidarity,' or 'integration.'"</p>
+              <div class="flex gap-1">
+                <span class="px-2 py-0.5 bg-white dark:bg-slate-800 rounded text-xs font-medium text-slate-600 dark:text-slate-400">5/10</span>
+                <span class="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 rounded text-xs font-medium text-amber-700 dark:text-amber-400">5/10</span>
+                <span class="px-2 py-0.5 bg-white dark:bg-slate-800 rounded text-xs font-medium text-slate-600 dark:text-slate-400">6/10</span>
+              </div>
+            </div>
+          </div>
+          <!-- Drill 3 - GOOD -->
+          <div class="glass-card rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+            <div class="inline-block px-2 py-1 bg-sky-100 dark:bg-sky-900/30 rounded-full text-sky-700 dark:text-sky-300 text-xs font-semibold mb-2">Technology</div>
+            <h3 class="text-base font-semibold text-slate-800 dark:text-white mb-2">Digital literacy</h3>
+            <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 mb-3 border border-slate-200 dark:border-slate-700">
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Response:</p>
+              <p class="text-xs text-slate-700 dark:text-slate-300 italic">"Digital literacy means the ability to use technology properly, like finding reliable information online."</p>
+            </div>
+            <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border border-green-200 dark:border-green-800">
+              <p class="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">AI Feedback:</p>
+              <p class="text-xs text-slate-700 dark:text-slate-300 mb-2">"Good structure. Replace 'things like' with 'such as' for Band 8."</p>
+              <div class="flex gap-1">
+                <span class="px-2 py-0.5 bg-white dark:bg-slate-800 rounded text-xs font-medium text-slate-600 dark:text-slate-400">6/10</span>
+                <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">7/10</span>
+                <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">7/10</span>
+              </div>
+            </div>
+          </div>
+          <!-- Drill 4 - EXCELLENT -->
+          <div class="glass-card rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+            <div class="inline-block px-2 py-1 bg-sky-100 dark:bg-sky-900/30 rounded-full text-sky-700 dark:text-sky-300 text-xs font-semibold mb-2">Education</div>
+            <h3 class="text-base font-semibold text-slate-800 dark:text-white mb-2">Critical thinking</h3>
+            <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 mb-3 border border-slate-200 dark:border-slate-700">
+              <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Response:</p>
+              <p class="text-xs text-slate-700 dark:text-slate-300 italic">"Critical thinking encompasses analyzing information objectively and forming reasoned judgments."</p>
+            </div>
+            <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border border-green-200 dark:border-green-800">
+              <p class="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">AI Feedback:</p>
+              <p class="text-xs text-slate-700 dark:text-slate-300 mb-2">"Excellent! Strong vocabulary ('encompasses,' 'objectively'). Band 8+ quality."</p>
+              <div class="flex gap-1">
+                <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">9/10</span>
+                <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">8/10</span>
+                <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">9/10</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════════════════
            HOW IT WORKS SECTION - MOBILE OPTIMIZED
       ═══════════════════════════════════════════════════════════════════ -->
       <section id="how-it-works" class="mb-12 sm:mb-16 md:mb-24">
@@ -620,153 +803,6 @@
           <p class="text-xs text-slate-500 dark:text-slate-500 text-center mt-4 sm:mt-6 italic">
             *Scores are approximations for practice only.
           </p>
-        </div>
-      </section>
-
-      <!-- ═══════════════════════════════════════════════════════════════════
-           EXAMPLE DRILLS SECTION - MOBILE OPTIMIZED
-      ═══════════════════════════════════════════════════════════════════ -->
-      <section class="mb-12 sm:mb-16 md:mb-24">
-        <div class="text-center mb-6 sm:mb-8 md:mb-12">
-          <h2
-            class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white mb-2 sm:mb-3"
-          >
-            Sample Drills
-          </h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          <!-- Example Drill 1 - POOR -->
-          <div class="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-200 dark:border-slate-700">
-            <div class="flex-1">
-              <div class="inline-block px-2 sm:px-3 py-1 bg-sky-100 dark:bg-sky-900/30 rounded-full text-sky-700 dark:text-sky-300 text-xs font-semibold mb-2 sm:mb-3">
-                Environment
-              </div>
-              <h3 class="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white mb-3">
-                Environmental degradation
-              </h3>
-              
-              <!-- User Response -->
-              <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 sm:p-4 mb-3 sm:mb-4 border border-slate-200 dark:border-slate-700">
-                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Response:</p>
-                <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 italic">
-                  "Environmental degradation is... um... it's bad for the environment. Like pollution and stuff. Trees are cut down and it's not good."
-                </p>
-              </div>
-              
-              <!-- AI Feedback - RED/FAILING -->
-              <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-3 sm:p-4 border border-red-200 dark:border-red-800">
-                <p class="text-xs font-semibold text-red-700 dark:text-red-300 mb-1">AI Feedback:</p>
-                <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mb-3">
-                  "Too vague and informal. Avoid fillers ('um', 'stuff'). Define the term clearly and provide specific examples. Response lacks academic vocabulary."
-                </p>
-                <div class="flex flex-wrap gap-1.5 sm:gap-2">
-                  <span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 rounded text-xs font-medium text-red-700 dark:text-red-400">Lexical: 4/10</span>
-                  <span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 rounded text-xs font-medium text-red-700 dark:text-red-400">Fluency: 4/10</span>
-                  <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded text-xs font-medium text-slate-600 dark:text-slate-400">Coherence: 5/10</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Example Drill 2 - BELOW AVERAGE -->
-          <div class="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-200 dark:border-slate-700">
-            <div class="flex-1">
-              <div class="inline-block px-2 sm:px-3 py-1 bg-sky-100 dark:bg-sky-900/30 rounded-full text-sky-700 dark:text-sky-300 text-xs font-semibold mb-2 sm:mb-3">
-                Society
-              </div>
-              <h3 class="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white mb-3">
-                Social cohesion
-              </h3>
-              
-              <!-- User Response -->
-              <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 sm:p-4 mb-3 sm:mb-4 border border-slate-200 dark:border-slate-700">
-                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Response:</p>
-                <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 italic">
-                  "Social cohesion is when people in a community... um... get along together. It's important because it makes society work better and people feel connected."
-                </p>
-              </div>
-              
-              <!-- AI Feedback - AMBER/NEEDS WORK -->
-              <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 sm:p-4 border border-amber-200 dark:border-amber-800">
-                <p class="text-xs font-semibold text-amber-700 dark:text-amber-300 mb-1">AI Feedback:</p>
-                <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mb-3">
-                  "Basic definition but lacks depth. Hesitation noted. Use terms like 'unity,' 'solidarity,' or 'integration' to improve lexical range."
-                </p>
-                <div class="flex flex-wrap gap-1.5 sm:gap-2">
-                  <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded text-xs font-medium text-slate-600 dark:text-slate-400">Lexical: 5/10</span>
-                  <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 rounded text-xs font-medium text-amber-700 dark:text-amber-400">Fluency: 5/10</span>
-                  <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded text-xs font-medium text-slate-600 dark:text-slate-400">Coherence: 6/10</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Example Drill 3 - GOOD -->
-          <div class="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-200 dark:border-slate-700">
-            <div class="flex-1">
-              <div class="inline-block px-2 sm:px-3 py-1 bg-sky-100 dark:bg-sky-900/30 rounded-full text-sky-700 dark:text-sky-300 text-xs font-semibold mb-2 sm:mb-3">
-                Technology
-              </div>
-              <h3 class="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white mb-3">
-                Digital literacy
-              </h3>
-              
-              <!-- User Response -->
-              <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 sm:p-4 mb-3 sm:mb-4 border border-slate-200 dark:border-slate-700">
-                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Response:</p>
-                <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 italic">
-                  "Digital literacy means the ability to use technology and the internet properly. It includes things like knowing how to find reliable information online and using digital tools for work or study."
-                </p>
-              </div>
-              
-              <!-- AI Feedback - GREEN/GOOD -->
-              <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 sm:p-4 border border-green-200 dark:border-green-800">
-                <p class="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">AI Feedback:</p>
-                <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mb-3">
-                  "Good structure with practical examples. To reach Band 8, replace 'things like' with 'such as' and add terms like 'competency' or 'proficiency.'"
-                </p>
-                <div class="flex flex-wrap gap-1.5 sm:gap-2">
-                  <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded text-xs font-medium text-slate-600 dark:text-slate-400">Lexical: 6/10</span>
-                  <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">Fluency: 7/10</span>
-                  <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">Coherence: 7/10</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Example Drill 4 - EXCELLENT -->
-          <div class="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-200 dark:border-slate-700">
-            <div class="flex-1">
-              <div class="inline-block px-2 sm:px-3 py-1 bg-sky-100 dark:bg-sky-900/30 rounded-full text-sky-700 dark:text-sky-300 text-xs font-semibold mb-2 sm:mb-3">
-                Education
-              </div>
-              <h3 class="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white mb-3">
-                Critical thinking
-              </h3>
-              
-              <!-- User Response -->
-              <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 sm:p-4 mb-3 sm:mb-4 border border-slate-200 dark:border-slate-700">
-                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Response:</p>
-                <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 italic">
-                  "Critical thinking encompasses the ability to analyze information objectively, evaluate evidence, and form reasoned judgments. It involves questioning assumptions rather than accepting claims at face value."
-                </p>
-              </div>
-              
-              <!-- AI Feedback - EXCELLENT -->
-              <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 sm:p-4 border border-green-200 dark:border-green-800">
-                <p class="text-xs font-semibold text-green-700 dark:text-green-300 mb-1">AI Feedback:</p>
-                <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mb-3">
-                  "Excellent! Strong academic vocabulary ('encompasses,' 'objectively,' 'reasoned judgments'). Clear structure with no hesitation. Band 8+ quality response."
-                </p>
-                <div class="flex flex-wrap gap-1.5 sm:gap-2">
-                  <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">Lexical: 9/10</span>
-                  <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">Fluency: 8/10</span>
-                  <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 rounded text-xs font-medium text-green-700 dark:text-green-400">Coherence: 9/10</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
