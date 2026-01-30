@@ -251,24 +251,12 @@
 
             <!-- PRIMARY CTA - WAITLIST FORM -->
             <div class="mb-6 sm:mb-8">
-              <form id="waitlist-form" action="https://api.web3forms.com/submit" method="POST" class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <input type="hidden" name="access_key" value="17e03ea2-8597-4ce6-8e73-f06c512993af">
-                <input type="hidden" name="subject" value="VoiceVocab Waitlist Signup">
-                <input type="hidden" name="message" value="New waitlist signup from VoiceVocab website">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email"
-                  required
-                  class="flex-1 px-4 sm:px-5 py-3 sm:py-4 rounded-xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 focus:border-sky-400 dark:focus:border-sky-500 focus:outline-none text-slate-800 dark:text-white placeholder:text-slate-400 text-sm sm:text-base shadow-sm"
-                />
-                <button
-                  type="submit"
-                  class="cta-primary px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-white font-bold rounded-xl text-sm sm:text-base md:text-lg whitespace-nowrap relative z-10"
-                >
-                  Join Waitlist →
-                </button>
-              </form>
+              <a
+                href="https://app.voicevocab.com"
+                class="cta-primary inline-flex items-center justify-center px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-white font-bold rounded-xl text-sm sm:text-base md:text-lg whitespace-nowrap relative z-10"
+              >
+                Try the beta →
+              </a>
               <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-500 mt-3">
                 Free beta access + early-bird pricing
               </p>
@@ -900,26 +888,14 @@
             </p>
           </div>
 
-          <form id="waitlist-form-bottom" action="https://api.web3forms.com/submit" method="POST" class="waitlist-form mx-auto flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <input type="hidden" name="access_key" value="17e03ea2-8597-4ce6-8e73-f06c512993af">
-            <input type="hidden" name="subject" value="VoiceVocab Waitlist Signup">
-            <input type="hidden" name="message" value="New waitlist signup from VoiceVocab website">
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              required
-              class="flex-1 px-4 sm:px-5 py-3 sm:py-4 rounded-xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 focus:border-sky-400 dark:focus:border-sky-500 focus:outline-none text-slate-800 dark:text-white placeholder:text-slate-400 text-sm sm:text-base shadow-sm"
-            />
-            <button
-              type="submit"
-              class="cta-primary px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-white font-bold rounded-xl text-sm sm:text-base md:text-lg whitespace-nowrap relative z-10"
-            >
-              Join Waitlist →
-            </button>
-          </form>
+          <a
+            href="https://app.voicevocab.com"
+            class="cta-primary inline-flex items-center justify-center px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-white font-bold rounded-xl text-sm sm:text-base md:text-lg whitespace-nowrap relative z-10"
+          >
+            Try the beta →
+          </a>
           <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-500 mt-3 sm:mt-4">
-            No spam. We'll email when beta opens.
+            Instant access in the app.
           </p>
         </div>
       </section>
@@ -1015,24 +991,12 @@
             10 minutes a day. Real practice. Instant feedback.
           </p>
 
-          <form id="waitlist-form-final" action="https://api.web3forms.com/submit" method="POST" class="waitlist-form mx-auto flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4 sm:mb-6">
-            <input type="hidden" name="access_key" value="17e03ea2-8597-4ce6-8e73-f06c512993af">
-            <input type="hidden" name="subject" value="VoiceVocab Waitlist Signup">
-            <input type="hidden" name="message" value="New waitlist signup from VoiceVocab website">
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              required
-              class="flex-1 px-4 sm:px-5 py-3 sm:py-4 rounded-xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 focus:border-sky-400 dark:focus:border-sky-500 focus:outline-none text-slate-800 dark:text-white placeholder:text-slate-400 text-sm sm:text-base shadow-sm"
-            />
-            <button
-              type="submit"
-              class="cta-primary px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-white font-bold rounded-xl text-sm sm:text-base md:text-lg whitespace-nowrap relative z-10"
-            >
-              Join Waitlist →
-            </button>
-          </form>
+          <a
+            href="https://app.voicevocab.com"
+            class="cta-primary inline-flex items-center justify-center px-6 sm:px-8 md:px-10 py-3 sm:py-4 text-white font-bold rounded-xl text-sm sm:text-base md:text-lg whitespace-nowrap relative z-10 mb-4 sm:mb-6"
+          >
+            Try the beta →
+          </a>
 
           <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-500">
             Free during beta • No credit card required
@@ -1078,48 +1042,6 @@
 
       lightBtn?.addEventListener('click', () => setTheme(true));
       darkBtn?.addEventListener('click', () => setTheme(false));
-
-      // Waitlist Form Handlers - Web3Forms Integration
-      const waitlistForms = document.querySelectorAll('#waitlist-form, #waitlist-form-bottom, #waitlist-form-final');
-      
-      waitlistForms.forEach(form => {
-        form.addEventListener('submit', async function(e) {
-          e.preventDefault();
-          
-          const submitButton = this.querySelector('button[type="submit"]');
-          const originalText = submitButton.textContent;
-          
-          // Disable button and show loading state
-          submitButton.disabled = true;
-          submitButton.textContent = 'Submitting...';
-          
-          try {
-            const formData = new FormData(this);
-            
-            const response = await fetch('https://api.web3forms.com/submit', {
-              method: 'POST',
-              body: formData
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-              // Show success message
-              alert('Thank you! We\'ll notify you when VoiceVocab launches.');
-              this.reset();
-            } else {
-              throw new Error(data.message || 'Submission failed');
-            }
-          } catch (error) {
-            console.error('Form submission error:', error);
-            alert('Oops! Something went wrong. Please try again.');
-          } finally {
-            // Re-enable button
-            submitButton.disabled = false;
-            submitButton.textContent = originalText;
-          }
-        });
-      });
 
       // Smooth scroll for anchor links
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
