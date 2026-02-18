@@ -1,15 +1,31 @@
 {
-  "name": "donotsubmit_enter_your_project_name",
+  "name": "voicevocab-landing",
+  "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"tailwindcss -i ./src/input.css -o ./src/output.css --watch\"",
-    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "prebuild": "rimraf out",
+    "build": "next build",
+    "postbuild": "next-sitemap --config sitemap.config.js",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^14.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1"
   },
   "devDependencies": {
-    "concurrently": "^9.0.0",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.17",
+    "next-sitemap": "^4.2.3",
+    "postcss": "^8.4.35",
+    "rimraf": "^5.0.10",
     "tailwindcss": "^3.4.0",
-    "vite": "^6.4.1"
+    "typescript": "^5.3.0"
   }
 }

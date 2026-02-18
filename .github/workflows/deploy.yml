@@ -54,15 +54,8 @@ jobs:
 
       - name: Sync to S3
         run: |
-          aws s3 sync . s3://${{ vars.S3_BUCKET }} \
-            --delete \
-            --exclude ".git/*" \
-            --exclude "node_modules/*" \
-            --exclude ".github/*" \
-            --exclude "src/input.css" \
-            --exclude "package*.json" \
-            --exclude "tailwind.config.js" \
-            --exclude "*.md"
+          aws s3 sync out/ s3://${{ vars.S3_BUCKET }} \
+            --delete
 
       - name: Invalidate CloudFront cache
         run: |

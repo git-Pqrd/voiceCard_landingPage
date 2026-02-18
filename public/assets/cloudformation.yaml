@@ -1,0 +1,321 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Easy Static Site - S3 + CloudFront with external ACM certificate (us-east-1 only)
+
+Rules:
+  RequireUsEast1:
+    Assertions:
+      - Assert:
+          Fn::Equals: [!Ref "AWS::Region", "us-east-1"]
+        AssertDescription: "This template must be deployed in us-east-1 because CloudFront requires ACM certificates in us-east-1."
+
+Parameters:
+  DomainName:
+    Type: String
+    Description: Your domain (e.g., example.com)
+  IncludeWww:
+    Type: String
+    Default: "Yes"
+    AllowedValues:
+      - "Yes"
+      - "No"
+    Description: Include www subdomain? (Yes = www.domain redirects to apex, No = apex only)
+  AcmCertificateArn:
+    Type: String
+    Description: ARN of your ACM certificate (must be in us-east-1; must cover www if IncludeWww=Yes)
+    AllowedPattern: "arn:aws:acm:us-east-1:[0-9]+:certificate/.*"
+    ConstraintDescription: Must be a valid ACM certificate ARN in us-east-1
+  GitHubRepo:
+    Type: String
+    Description: "GitHub repo for OIDC (format: username/repo)"
+  GitHubBranch:
+    Type: String
+    Default: main
+    Description: Branch for OIDC trust
+
+Conditions:
+  HasWwwSubdomain: !Equals [!Ref IncludeWww, "Yes"]
+
+Resources:
+  # Lambda function to create OIDC provider if it doesn't exist
+  OIDCProviderHandler:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "${AWS::StackName}-oidc-fn"
+      Runtime: python3.11
+      Handler: index.handler
+      Role: !GetAtt OIDCProviderHandlerRole.Arn
+      Timeout: 60
+      Code:
+        ZipFile: |
+          import boto3
+          import json
+          import urllib3
+          import time
+
+          http = urllib3.PoolManager()
+
+          def send_response(event, context, status, response_data, physical_id=None):
+              response_body = json.dumps({
+                  'Status': status,
+                  'Reason': 'See the details in CloudWatch Log Stream: ' + context.log_stream_name,
+                  'PhysicalResourceId': physical_id or context.log_stream_name,
+                  'StackId': event['StackId'],
+                  'RequestId': event['RequestId'],
+                  'LogicalResourceId': event['LogicalResourceId'],
+                  'Data': response_data
+              })
+              
+              response_url = event['ResponseURL']
+              http.request('PUT', response_url, body=response_body, headers={'Content-Type': 'application/json'})
+
+          def handler(event, context):
+              iam = boto3.client('iam')
+              provider_url = 'https://token.actions.githubusercontent.com'
+              request_type = event.get('RequestType', 'Create')
+              
+              # ARN format is predictable
+              account_id = context.invoked_function_arn.split(':')[4]
+              provider_arn = f'arn:aws:iam::{account_id}:oidc-provider/{provider_url.replace("https://", "")}'
+              
+              try:
+                  if request_type == 'Delete':
+                      # Don't delete on stack deletion - let user manage it
+                      send_response(event, context, 'SUCCESS', {'ProviderArn': provider_arn}, provider_arn)
+                      return
+                  
+                  # Check if provider already exists
+                  exists = False
+                  try:
+                      iam.get_open_id_connect_provider(OpenIDConnectProviderArn=provider_arn)
+                      exists = True
+                  except iam.exceptions.NoSuchEntityException:
+                      exists = False
+                  except Exception:
+                      # Try listing all providers
+                      providers = iam.list_open_id_connect_providers()
+                      for provider in providers.get('OpenIDConnectProviderList', []):
+                          if provider['Arn'] == provider_arn:
+                              exists = True
+                              break
+                  
+                  if not exists and request_type == 'Create':
+                      # Create the provider
+                      try:
+                          iam.create_open_id_connect_provider(
+                              Url=provider_url,
+                              ClientIDList=['sts.amazonaws.com'],
+                              ThumbprintList=[
+                                  '6938fd4d98bab03faadb97b34396831e3780aea1',
+                                  '1c58a3a8518e8759bf075b76b750d4f2df264fcd'
+                              ]
+                          )
+                      except iam.exceptions.EntityAlreadyExistsException:
+                          # Race condition - it was just created
+                          pass
+                  
+                  send_response(event, context, 'SUCCESS', {'ProviderArn': provider_arn}, provider_arn)
+              except Exception as e:
+                  send_response(event, context, 'FAILED', {'Error': str(e)})
+
+  OIDCProviderHandlerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: ManageOIDCProvider
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - iam:ListOpenIDConnectProviders
+                  - iam:GetOpenIDConnectProvider
+                  - iam:CreateOpenIDConnectProvider
+                Resource: "*"
+
+  OIDCProvider:
+    Type: Custom::OIDCProvider
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ServiceToken: !GetAtt OIDCProviderHandler.Arn
+
+  # S3 Bucket (private)
+  SiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${DomainName}-site-${AWS::AccountId}"
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  # OAC for CloudFront access to S3
+  OriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "${DomainName}-oac"
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  SiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    DependsOn: Distribution
+    Properties:
+      Bucket: !Ref SiteBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowCloudFrontServicePrincipalReadOnly
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action:
+              - s3:GetObject
+            Resource: !Sub "${SiteBucket.Arn}/*"
+            Condition:
+              StringLike:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/*"
+
+  # CloudFront Function for www to apex redirect (only created if IncludeWww=Yes)
+  WwwRedirectFunction:
+    Type: AWS::CloudFront::Function
+    Condition: HasWwwSubdomain
+    Properties:
+      Name: !Sub "${AWS::StackName}-www-redirect"
+      AutoPublish: true
+      FunctionCode: |
+        function handler(event) {
+          var host = event.request.headers.host.value;
+          if (host.startsWith('www.')) {
+            return {
+              statusCode: 301,
+              statusDescription: 'Moved Permanently',
+              headers: { location: { value: 'https://' + host.substring(4) + event.request.uri } }
+            };
+          }
+          return event.request;
+        }
+      FunctionConfig:
+        Runtime: cloudfront-js-2.0
+        Comment: Redirect www to apex domain
+
+  # CloudFront Distribution
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases: !If
+          - HasWwwSubdomain
+          - - !Ref DomainName
+            - !Sub "www.${DomainName}"
+          - - !Ref DomainName
+        DefaultRootObject: index.html
+        DefaultCacheBehavior:
+          AllowedMethods: [GET, HEAD, OPTIONS]
+          CachedMethods: [GET, HEAD]
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # Managed-CachingOptimized
+          FunctionAssociations: !If
+            - HasWwwSubdomain
+            - - EventType: viewer-request
+                FunctionARN: !GetAtt WwwRedirectFunction.FunctionARN
+            - !Ref "AWS::NoValue"
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+        Enabled: true
+        HttpVersion: http2and3
+        Origins:
+          - Id: S3Origin
+            DomainName: !GetAtt SiteBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt OriginAccessControl.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+        ViewerCertificate:
+          AcmCertificateArn: !Ref AcmCertificateArn
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
+
+  # IAM Role for GitHub Actions OIDC
+  # Uses the OIDC provider ARN from the custom resource
+  GitHubActionsRole:
+    Type: AWS::IAM::Role
+    DependsOn: OIDCProvider
+    Properties:
+      RoleName: !Sub "${AWS::StackName}-github-actions"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !GetAtt OIDCProvider.ProviderArn
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                token.actions.githubusercontent.com:aud: sts.amazonaws.com
+              StringLike:
+                token.actions.githubusercontent.com:sub: !Sub "repo:${GitHubRepo}:ref:refs/heads/${GitHubBranch}"
+      Policies:
+        - PolicyName: DeployToS3AndCloudFront
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: S3Access
+                Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:DeleteObject
+                  - s3:ListBucket
+                Resource:
+                  - !GetAtt SiteBucket.Arn
+                  - !Sub "${SiteBucket.Arn}/*"
+              - Sid: CloudFrontInvalidation
+                Effect: Allow
+                Action:
+                  - cloudfront:CreateInvalidation
+                Resource: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
+
+Outputs:
+  SiteBucketName:
+    Value: !Ref SiteBucket
+    Description: S3 bucket name - use as S3_BUCKET in GitHub
+  CloudFrontDomainName:
+    Value: !GetAtt Distribution.DomainName
+    Description: Point your DNS CNAME/ALIAS to this value
+  CloudFrontId:
+    Value: !Ref Distribution
+    Description: CloudFront distribution ID - use as CLOUDFRONT_ID in GitHub
+  CloudFrontURL:
+    Value: !Sub "https://${Distribution.DomainName}"
+    Description: CloudFront URL (before custom domain is configured)
+  GitHubRoleARN:
+    Value: !GetAtt GitHubActionsRole.Arn
+    Description: IAM role ARN - use as AWS_ROLE_ARN in GitHub
+  SiteURL:
+    Value: !Sub "https://${DomainName}"
+    Description: Your site URL (after DNS is configured)

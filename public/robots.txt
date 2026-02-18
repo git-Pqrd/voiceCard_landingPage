@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://voicevocab.com
+
+# Sitemaps
+Sitemap: https://voicevocab.com/sitemap.xml
