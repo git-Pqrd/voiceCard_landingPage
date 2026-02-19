@@ -13,7 +13,7 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
         <p className="text-slate-500 dark:text-slate-400">
-          Last updated: January 2025
+          Last updated: February 2026
         </p>
       </header>
 
@@ -49,10 +49,16 @@ export default function PrivacyPage() {
             3. Data Storage and Security
           </h2>
           <p>
-            Audio recordings are processed to generate feedback and may be
-            stored temporarily. We implement security measures to protect your
-            data, but no method of transmission over the internet is 100%
-            secure.
+            Audio recordings and related practice data are stored so we can
+            provide speaking history, progress tracking, and improved feedback
+            over time. We use technical and organizational security measures to
+            protect your data, but no method of transmission or storage is
+            100% secure.
+          </p>
+          <p>
+            We retain data for as long as needed to operate the service,
+            maintain your account history, comply with legal obligations,
+            resolve disputes, and enforce our agreements.
           </p>
         </section>
 
@@ -79,7 +85,7 @@ export default function PrivacyPage() {
           <p>You have the right to:</p>
           <ul>
             <li>Access your personal data</li>
-            <li>Request deletion of your data</li>
+            <li>Request deletion of your data, subject to legal requirements</li>
             <li>Opt out of marketing communications</li>
             <li>Request data portability</li>
           </ul>
