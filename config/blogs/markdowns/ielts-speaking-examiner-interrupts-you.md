@@ -1,6 +1,10 @@
 # IELTS Speaking: When the Examiner Interrupts You (And Exactly What To Do)
 
-The IELTS Speaking test is a timed, three‑part interview controlled by the examiner, so being stopped or moved on is part of normal test procedure, not an automatic penalty. Your score still depends on the four official criteria: Fluency and Coherence, Lexical Resource, Grammatical Range and Accuracy, and Pronunciation. [ielts](https://ielts.org/take-a-test/test-types/ielts-academic-test/ielts-academic-format-speaking)
+The IELTS Speaking test is a timed, three‑part interview controlled by the examiner, so being stopped or moved on is part of normal test procedure, not an automatic penalty.
+
+**As a matter of fact it can be a good sign! Read more to find out.**
+
+Your score still depends on the four official criteria: Fluency and Coherence, Lexical Resource, Grammatical Range and Accuracy, and Pronunciation. [ielts](https://ielts.org/take-a-test/test-types/ielts-academic-test/ielts-academic-format-speaking)
 
 This guide explains:
 
