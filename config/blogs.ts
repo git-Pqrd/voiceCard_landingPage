@@ -19,6 +19,15 @@ export const blogsDict: Record<string, Article> = {
     date: "2026-02-21",
     markdown: true,
   },
+  why_most_ielts_speaking_practice_is_ineffective: {
+    title: "Why Most IELTS Speaking Practice Is Ineffective (And What Actually Works)",
+    href: "why-most-ielts-speaking-practice-is-ineffective",
+    tags: ["IELTS", "speaking", "practice", "feedback", "repetition"],
+    synopsis:
+      "Why passive IELTS Speaking prep stalls progress and what timed, measurable, repeatable practice does better.",
+    date: "2026-03-02",
+    markdown: true,
+  },
 };
 
 const existingHref: string[] = [];
