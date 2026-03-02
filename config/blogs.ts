@@ -28,6 +28,15 @@ export const blogsDict: Record<string, Article> = {
     date: "2026-03-02",
     markdown: true,
   },
+  what_a_band_7_ielts_speaking_answer_actually_sounds_like: {
+    title: "What a Band 7 IELTS Speaking Answer Actually Sounds Like",
+    href: "what-a-band-7-ielts-speaking-answer-actually-sounds-like",
+    tags: ["IELTS", "speaking", "band 7", "sample answers", "fluency"],
+    synopsis:
+      "See real Band 6 vs Band 7 IELTS Speaking examples and learn how clearer structure, better vocabulary, and fuller ideas raise your score.",
+    date: "2026-03-03",
+    markdown: true,
+  },
 };
 
 const existingHref: string[] = [];

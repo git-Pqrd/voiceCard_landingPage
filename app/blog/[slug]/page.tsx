@@ -31,9 +31,27 @@ export async function generateMetadata({
   const { slug } = await params;
   const article = blogs.find((a) => a.href === slug);
   if (!article) return {};
+  const articleUrl = `https://voicevocab.com/blog/${article.href}`;
   return {
     title: `${article.title} - VoiceVocab Blog`,
     description: article.synopsis,
+    keywords: article.tags,
+    alternates: {
+      canonical: articleUrl,
+    },
+    openGraph: {
+      title: `${article.title} - VoiceVocab Blog`,
+      description: article.synopsis,
+      type: "article",
+      url: articleUrl,
+      siteName: "VoiceVocab",
+      tags: article.tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${article.title} - VoiceVocab Blog`,
+      description: article.synopsis,
+    },
   };
 }
 
