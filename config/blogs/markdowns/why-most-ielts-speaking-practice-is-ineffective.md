@@ -71,11 +71,11 @@ Effective preparation includes four elements.
 Practice answering within strict limits:
 
 - 20 to 30 seconds for Part 1
-- About 60 seconds for Part 2
+- 1 to 2 minutes for Part 2 (target the full 2 minutes)
 - 30 to 45 seconds for Part 3
 
 If you want to simulate this properly, you need structured practice questions. You can start here:
-https://voicevocab.com/practice
+[VoiceVocab Practice](https://voicevocab.com/practice)
 
 ---
 
@@ -87,7 +87,7 @@ Seeing exactly what you said reveals:
 - Filler phrases
 - Weak idea development
 
-Without a transcript, many issues go unnoticed. Platforms like https://voicevocab.com automatically generate transcripts after each attempt so you can review your real output, not your memory of it.
+Without a transcript, many issues go unnoticed. Platforms like [VoiceVocab](https://voicevocab.com) automatically generate transcripts after each attempt so you can review your real output, not your memory of it.
 
 ---
 
@@ -98,7 +98,7 @@ Feedback should match IELTS criteria. Generic comments do not create improvement
 Tools such as VoiceVocab provide band-style scores across fluency, lexical resource, coherence, and pronunciation, aligned with the IELTS rubric.
 
 You can see how scoring works here:
-https://voicevocab.com/progress
+[VoiceVocab Progress](https://voicevocab.com/progress)
 
 ---
 
@@ -113,7 +113,7 @@ The fastest improvement pattern is simple:
 Because VoiceVocab allows multiple attempts with instant feedback, you can create tight repetition loops instead of waiting days between speaking sessions.
 
 Try it here:
-https://voicevocab.com
+[VoiceVocab](https://voicevocab.com)
 
 ---
 
@@ -142,4 +142,4 @@ If your preparation only involves watching and memorizing, progress will stall.
 If your preparation mirrors real exam pressure with structured feedback, improvement becomes predictable.
 
 Start with structured, timed practice and measurable feedback:
-https://voicevocab.com
+[VoiceVocab](https://voicevocab.com)
