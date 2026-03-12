@@ -7,11 +7,12 @@ import { ThemeToggle } from "@/app/components/ThemeToggle";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AI IELTS Speaking Practice App | Score Band 7+ with Spoken Drills",
+  title:
+    "VoiceVocab — Learn by Explaining | Active Learning & Spaced Repetition",
   description:
-    "Master IELTS & TOEFL speaking with AI-powered spoken definition drills. Get instant feedback on fluency, vocabulary & coherence. Practice anytime no tutor needed. Join the waitlist today.",
+    "Stop memorizing definitions. Explain concepts aloud, get AI follow-up questions that probe real understanding, and lock it in with spaced repetition. Works for any domain — language exams, technical concepts, medicine, interview prep.",
   keywords:
-    "IELTS speaking practice, IELTS speaking band 7, IELTS speaking app, TOEFL speaking practice, speaking vocabulary practice, AI speaking coach, spoken definition trainer",
+    "active learning, spaced repetition, AI tutor, voice learning, explain to learn, vocabulary learning, concept mastery, active recall, AI follow-up questions",
   robots: "index,follow,max-image-preview:large",
   alternates: { canonical: "https://VoiceVocab.com/" },
   icons: {
@@ -25,28 +26,29 @@ export const metadata: Metadata = {
   manifest: "/assets/site.webmanifest",
   openGraph: {
     type: "website",
-    siteName: "VoiceVocab - AI Speaking Coach",
-    title: "AI IELTS Speaking Practice App | Score Band 7+ with Spoken Drills",
+    siteName: "VoiceVocab",
+    title:
+      "VoiceVocab — Learn by Explaining | Active Learning & Spaced Repetition",
     description:
-      "Master IELTS & TOEFL speaking with AI-powered spoken definition drills. Get instant feedback on fluency, vocabulary & coherence. Join the waitlist today.",
+      "Explain concepts aloud. AI asks follow-up questions to probe your understanding. Spaced repetition locks it in. Works for any domain.",
     url: "https://VoiceVocab.com/",
     images: [
       {
         url: "https://VoiceVocab.com/assets/android-chrome-512x512.png",
         width: 512,
         height: 512,
-        alt: "VoiceVocab - AI IELTS Speaking Practice",
+        alt: "VoiceVocab — Active Learning & Spaced Repetition",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI IELTS Speaking Practice App | Score Band 7+",
+    title: "VoiceVocab — Learn by Explaining | Active Learning",
     description:
-      "Master IELTS & TOEFL speaking with AI-powered spoken definition drills. Get instant feedback on fluency, vocabulary & coherence.",
+      "Explain concepts aloud. AI asks follow-up questions. Spaced repetition locks it in. Works for any domain.",
     images: {
       url: "https://VoiceVocab.com/assets/android-chrome-512x512.png",
-      alt: "VoiceVocab - AI IELTS Speaking Practice",
+      alt: "VoiceVocab — Active Learning & Spaced Repetition",
     },
   },
   other: {
